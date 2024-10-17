@@ -2,12 +2,11 @@ import requests
 from bs4 import BeautifulSoup
 import csv
 
-def scrape(writer):
-    #days of the week
-    #url = 'https://www.xwordinfo.com/PS?date=3/1/1942'
-    #response = requests.get(url)
-    #soup = BeautifulSoup(response.text, 'html.parser')
-    soup = BeautifulSoup(open("C:/Users/swimm/Documents/isp/trying/crossword.html"), 'html.parser')
+def scrape(writer, url):
+    url = url
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    #soup = BeautifulSoup(open("C:/Users/swimm/Documents/isp/trying/crossword.html"), 'html.parser')
     author_editor = soup.find("div", {"class": "aegrid"}).text.strip().splitlines()
     link = soup.find("link", {"rel": "canonical"}).get('href')
     date = link.split("=")[1]
