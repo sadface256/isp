@@ -20,7 +20,7 @@ def build_urls():
 
 def scraper():
     with open('test_csv.csv', 'w', newline='') as f:
-        list_urls = build_urls()
+        list_urls = ["https://www.xwordinfo.com/PS?date=2/15/1942"]#build_urls()
         writer = csv.writer(f)
         for url in list_urls:
             scrape(writer, url)

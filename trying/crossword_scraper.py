@@ -27,7 +27,8 @@ def scrape(writer, url):
                 #make the clue succinct, concatenate them
                 answer = clue_pair[-1].strip()
                 #print(clue, answer)
-                row = clue + ',' + answer + ',' + author + ',' + editor + ',' + link + ',' + date
+                row = [clue, answer, author, editor, link, date]
+                #row = clue + ',' + answer + ',' + author + ',' + editor + ',' + link + ',' + date
                 writer.writerow(row)
             #print(div.text)
             pass
