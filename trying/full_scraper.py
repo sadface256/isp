@@ -1,5 +1,6 @@
 import csv
 from crossword_scraper import scrape
+from xwordinfo import parse_crossword
 import pandas as pd
 
 def build_urls():
@@ -16,14 +17,40 @@ def build_urls():
     crossword_urls = ["https://www.xwordinfo.com/Crossword?date=" + date for date in crossword_dates]
     ps_sunday_urls.append(ps_later_urls)
     ps_sunday_urls.append(crossword_urls)
-    return ps_sunday_urls
+    ps_later_urls.extend(crossword_urls)
+    return ps_later_urls#ps_sunday_urls
+
+# def scraper():
+#     with open('test_csv.csv', 'w', newline='') as f:
+#         list_urls = build_urls()
+#         writer = csv.writer(f)
+#         writer.writerow(['CLUE', 'ANSWER', 'AUTHOR', 'EDITOR', 'LINK', 'DATE'])
+#         for url in list_urls:
+#             scrape(writer, url)
 
 def scraper():
-    with open('test_csv.csv', 'w', newline='') as f:
-        list_urls = ["https://www.xwordinfo.com/PS?date=2/15/1942"]#build_urls()
-        writer = csv.writer(f)
-        for url in list_urls:
+    list_urls = build_urls()
+    for url in list_urls:
+        date = url.split("=")[1].replace("/", "_")
+        with open('crossword_data/' + date + '.csv', 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(['CLUE', 'ANSWER', 'AUTHOR', 'EDITOR', 'LINK', 'DATE'])
             scrape(writer, url)
+            print('Done with ' + date + "!")
+
+def json_scraper():
+    list_urls = build_urls()
+    for url in list_urls:
+        date = url.split("=")[1].replace("/", "_")
+        with open('json_crossword_data/' + date + '.json', 'w', newline='') as f:
+            #writer = csv.writer(f)
+            #writer.writerow(['CLUE', 'ANSWER', 'AUTHOR', 'EDITOR', 'LINK', 'DATE'])
+            #scrape(writer, url)
+            parse_crossword(url, f)
+
+            print('Done with ' + date + "!")
+
+
 
 if __name__ == '__main__':
     scraper()
