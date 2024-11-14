@@ -1,15 +1,18 @@
 import json
 from bs4 import BeautifulSoup
+import requests
 
-html_content = ""
-with open("example-crossword.html") as f:
-    html_content = f.read()
+# html_content = ""
+# with open("example-crossword.html") as f:
+#     html_content = f.read()
 
-def parse_crossword(html_content):
-    soup = BeautifulSoup(html_content, 'html.parser')
+def parse_crossword(url, f):
+    #html_content = requests.get(url)
+    soup = BeautifulSoup(open("/home/scox5/Desktop/isp/trying/crossword.html"), 'html.parser')
     crossword = {}
 
     # Parse grid
+    print(soup.find('div', {'id': 'ACluesPan'}))
     grid_table = soup.find('table', {'id': 'PuzTable'})
     grid = []
     cell_numbers = {}  # Map of (row, col) to cell number
@@ -94,6 +97,8 @@ def parse_crossword(html_content):
     across_section = soup.find('div', {'id': 'ACluesPan'})
     down_section = soup.find('div', {'id': 'DCluesPan'})
 
+    print(type(across_section))
+
     across_clues = parse_clues(across_section, 'A')
     down_clues = parse_clues(down_section, 'D')
 
@@ -103,8 +108,8 @@ def parse_crossword(html_content):
     crossword['down_clues'] = down_clues
 
     # Output as JSON
-    return json.dumps(crossword, indent=2)
+    json.dump(crossword, f, indent=2)
 
 # Call the function and print the JSON
-crossword_json = parse_crossword(html_content)
-print(crossword_json)
+crossword_json = parse_crossword("hi", "hello")
+# print(crossword_json)
